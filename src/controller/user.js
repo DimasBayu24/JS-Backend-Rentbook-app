@@ -16,6 +16,7 @@ module.exports = {
           .then((result) => {
               response.response(res,result)              
           }).catch((err) => {
+              console.log(err)
               response.response(res, null, 401, "Sorry Something Wrong")
           });
     },
@@ -31,7 +32,7 @@ module.exports = {
                 if(userPass === dataUser.password){
                     dataUser.token = jwt.sign({
                         username : dataUser.username,
-                        id_user : dataUser.id_user
+                        id : dataUser.id
                     }, process.env.SECRET_KEY,{
                         expiresIn : '1200s'
                     })  

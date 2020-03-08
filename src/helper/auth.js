@@ -1,3 +1,4 @@
+require('dotenv').config()
 const jwt  = require('jsonwebtoken');
 const response = require('./response');
 const allowedAccess = process.env.REQUEST_HEADERS
@@ -8,6 +9,9 @@ module.exports = {
         const headerAuth = req.headers["authorization"]
         const headerSecret = req.headers['x-token']
         if ( headerAuth !==  allowedAccess){
+            console.log(allowedAccess);
+            console.log(headerAuth);
+            
             return response.response(res,null,401,"Sorry You Unauthorized")
         } else if (typeof headerSecret === 'undefined'){
             next()
@@ -27,7 +31,7 @@ module.exports = {
 
             if(err && err.name === 'JsonWebTokenError') return response.response(res,null,402,'Invalid Token')
 
-            if(parseInt(userToken) !== parseInt(decode.id_user))return response.response(res,null,402,'Invalid User Token')
+            if(parseInt(userToken) !== parseInt(decode.id))return response.response(res,null,402,'Invalid User Token')
 
             next()
         })

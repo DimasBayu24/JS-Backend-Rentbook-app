@@ -15,7 +15,7 @@ module.exports = {
     },
     getByUserName: (username) => {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT id_user,username, salt, password FROM user WHERE username = ?', username, (err, result) => {
+            connection.query('SELECT id,username, salt, password FROM user WHERE username = ?', username, (err, result) => {
                 if (!err) {
                     resolve(result)
                 } else {

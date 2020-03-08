@@ -6,16 +6,15 @@ const auth = require('../helper/auth')
 route 
     // .all('*',auth.authInfo)
     .get('/',book.getBook)
- 
     .get('/availability',book.getAvail)
     .get('/search/:booktitle',book.searchBookTitle)
     .get('/sortbook',book.sortBook)
     .get('/sortdate',book.sortDate)
     .get('/sortgenre',book.sortGenre)
-    .post('/addbook', book.addBook)
-    .patch('/rent/:idbook',book.rentBook)
-    .patch('/return/:idbook',book.rentBook)
-    .patch('/:idbook',book.updateBook)
-    .delete('/:idbook', book.deleteBook)
+    .post('/addbook',auth.authInfo, auth.accessToken,book.addBook)
+    .patch('/rent/:idbook',auth.accessToken,book.rentBook)
+    .patch('/return/:idbook',auth.accessToken, book.returnBook)
+    .patch('/:idbook',auth.authInfo, auth.accessToken,book.updateBook)
+    .delete('/:idbook',auth.authInfo, auth.accessToken,book.deleteBook)
 
 module.exports = route
