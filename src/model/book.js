@@ -129,7 +129,9 @@ module.exports = {
     },
     returnBook : (data,idBook) => {
         
-        // console.log(id)
+        
+        
+
         return new Promise ((resolve, reject)=>{
             connection.query(`UPDATE book SET ? WHERE id = ?`,[data,idBook],(err,result)=>{
                 if (!err){
@@ -143,6 +145,17 @@ module.exports = {
     getIdBook : (idbook) =>{
         return new Promise((resolve,reject)=>{
             connection.query('SELECT availability FROM `book` WHERE id = ? ',idbook, (err,result)=>{
+                if(!err){
+                    resolve(result)
+                } else{
+                    reject(new Error(err))
+                }
+            })
+        })
+    },
+    getIdByBook : (idbook) =>{
+        return new Promise((resolve,reject)=>{
+            connection.query('SELECT * FROM `book` WHERE id = ? ',idbook, (err,result)=>{
                 if(!err){
                     resolve(result)
                 } else{

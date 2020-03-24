@@ -14,7 +14,7 @@ module.exports = {
         }
         user.register(data)
           .then((result) => {
-              response.response(res,result)              
+              response.response(res,result,200,"Enjoy your full experience on TAMAN BUKU DIMAS")              
           }).catch((err) => {
               console.log(err)
               response.response(res, null, 401, "Sorry Something Wrong")
@@ -34,18 +34,18 @@ module.exports = {
                         username : dataUser.username,
                         id : dataUser.id
                     }, process.env.SECRET_KEY,{
-                        expiresIn : '1200s'
+                        expiresIn : '1200m'
                     })  
                     
                     delete dataUser.salt
                     delete dataUser.password
-                    return response.response(res,dataUser)
+                    return response.response(res,dataUser, 200,"Welcome!")
                 } else {
                     return response.response(res,null,403,"Wrong Password Or Username")
                 }
             })
             .catch(()=>{
-                return response.response(res,null,404, "Username Not Register")
+                return response.response(res,null,404, "Username Not Registered")
             })
     }
 }

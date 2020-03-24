@@ -1,19 +1,19 @@
 require('dotenv').config()
-const jwt  = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const response = require('./response');
 const allowedAccess = process.env.REQUEST_HEADERS
 
 module.exports = {
-    authInfo : (req,res,next)=>{
+    authInfo: (req, res, next) => {
         console.log('masuk')
         const headerAuth = req.headers["authorization"]
         const headerSecret = req.headers['x-token']
-        if ( headerAuth !==  allowedAccess){
+        if (headerAuth !== allowedAccess) {
             console.log(allowedAccess);
             console.log(headerAuth);
-            
-            return response.response(res,null,401,"Sorry You Unauthorized")
-        } else if (typeof headerSecret === 'undefined'){
+
+            return response.response(res, null, 401, "Sorry, you are unauthorized")
+        } else if (typeof headerSecret === 'undefined') {
             next()
         }
         else {
@@ -22,16 +22,16 @@ module.exports = {
             next()
         }
     },
-    accessToken : (req,res,next) =>{
+    accessToken: (req, res, next) => {
         const secretKey = process.env.SECRET_KEY
         const accessToken = req.token
         const userToken = req.headers['user-token']
-        jwt.verify (accessToken,secretKey, (err, decode) =>{
-            if(err && err.name === 'TokenExpiredError') return response.response(res,null,402,'Token Expired')
+        jwt.verify(accessToken, secretKey, (err, decode) => {
+            if (err && err.name === 'TokenExpiredError') return response.response(res, null, 402, 'Token Expired')
 
-            if(err && err.name === 'JsonWebTokenError') return response.response(res,null,402,'Invalid Token')
+            if (err && err.name === 'JsonWebTokenError') return response.response(res, null, 402, 'Invalid Token')
 
-            if(parseInt(userToken) !== parseInt(decode.id))return response.response(res,null,402,'Invalid User Token')
+            if (parseInt(userToken) !== parseInt(decode.id)) return response.response(res, null, 402, 'Invalid User Token')
 
             next()
         })
